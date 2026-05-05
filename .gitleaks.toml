@@ -1,0 +1,41 @@
+# .gitleaks.toml
+
+[extend]
+useDefault = true
+
+# Rule 1 — Connection strings with credentials
+# Catches: mongodb+srv://user:pass@host, redis://:pass@host,
+#          mysql://user:pass@host, postgres://user:pass@host
+[[rules]]
+id = "connection-string-with-credentials"
+description = "Any connection string containing embedded credentials"
+regex = '''[A-Za-z][A-Za-z0-9+\-.]*://[^/:@\s]+:[^/:@\s]+@[^\s'"`,;]{4,}'''
+entropy = 0
+tags = ["connection-string", "credentials"]
+
+# Rule 2 — High entropy value on any variable
+# Catches: random looking values regardless of variable name
+# entropy 3.5 = balance between catching real secrets and avoiding false positives
+[[rules]]
+id = "high-entropy-assignment"
+description = "Any variable assigned a high entropy value"
+regex = '''(?i)[a-z0-9_]{2,}\s*[=:]\s*['"`]?([a-zA-Z0-9+/!@#$%^&*()\-_]{8,})['"`]?'''
+entropy = 3.5
+tags = ["high-entropy", "secret"]
+
+# Rule 3 — Private keys and certificates
+# Catches: RSA, EC, OpenSSH private keys
+[[rules]]
+id = "private-key-content"
+description = "Private key or certificate content"
+regex = '''-----BEGIN[ A-Z]{0,20}PRIVATE KEY-----'''
+tags = ["private-key", "certificate"]
+
+# Rule 4 — Base64 encoded secrets
+# Catches: APP_KEY=base64:longstring, laravel keys etc.
+[[rules]]
+id = "base64-encoded-secret"
+description = "Base64 encoded value assigned to a variable"
+regex = '''(?i)[a-z0-9_]{2,}\s*[=:]\s*['"`]?(?:base64:)?[A-Za-z0-9+/]{40,}={0,2}['"`]?'''
+entropy = 4.5
+tags = ["base64", "encoded", "secret"]
