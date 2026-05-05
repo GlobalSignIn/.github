@@ -1,0 +1,9 @@
+[extend]
+useDefault = false
+
+[[rules]]
+id = "low-entropy-assignment"
+description = "Any variable assigned any non-empty value"
+regex = '''(?i)[a-z0-9_]{2,}\s*[=:]\s*['"`]?([a-zA-Z0-9+/!@#$%^&*()\-_]{8,})['"`]?'''
+entropy = 0
+tags = ["low-entropy", "warn"]
