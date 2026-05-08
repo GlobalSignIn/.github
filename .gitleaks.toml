@@ -15,12 +15,11 @@ tags = ["connection-string", "credentials"]
 
 # Rule 2 — High entropy value on any variable
 # Catches: random looking values regardless of variable name
-# entropy 3.5 = balance between catching real secrets and avoiding false positives
 [[rules]]
 id = "high-entropy-assignment"
 description = "Any variable assigned a high entropy value"
 regex = '''(?i)[a-z0-9_]{2,}\s*[=:]\s*['"`]?([a-zA-Z0-9+/!@#$%^&*()\-_]{8,})['"`]?'''
-entropy = 3.5
+entropy = 4.5
 tags = ["high-entropy", "secret"]
 
 # Rule 3 — Private keys and certificates
