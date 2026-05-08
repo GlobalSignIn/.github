@@ -14,7 +14,6 @@ entropy = 0
 tags = ["connection-string", "credentials"]
 
 # Rule 2 — High entropy value on any variable
-# Catches: random looking values regardless of variable name
 [[rules]]
 id = "high-entropy-assignment"
 description = "Any variable assigned a high entropy value"
@@ -23,7 +22,6 @@ entropy = 4.5
 tags = ["high-entropy", "secret"]
 
 # Rule 3 — Private keys and certificates
-# Catches: RSA, EC, OpenSSH private keys
 [[rules]]
 id = "private-key-content"
 description = "Private key or certificate content"
@@ -31,7 +29,6 @@ regex = '''-----BEGIN[ A-Z]{0,20}PRIVATE KEY-----'''
 tags = ["private-key", "certificate"]
 
 # Rule 4 — Base64 encoded secrets
-# Catches: APP_KEY=base64:longstring, laravel keys etc.
 [[rules]]
 id = "base64-encoded-secret"
 description = "Base64 encoded value assigned to a variable"
